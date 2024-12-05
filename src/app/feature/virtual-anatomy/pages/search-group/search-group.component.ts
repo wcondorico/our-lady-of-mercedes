@@ -37,7 +37,7 @@ export class SearchGroupComponent {
 
   searchGroup() {
     const body: SearchGroupBody = {
-      nameGroup: this.name,
+      nameGroup: this.name.toUpperCase(),
       serialGroup: this.serial,
     };
 

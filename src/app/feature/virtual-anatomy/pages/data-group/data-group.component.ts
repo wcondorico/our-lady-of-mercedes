@@ -13,6 +13,8 @@ import { BarChart } from 'echarts/charts';
 import { GridComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart } from 'echarts/charts';
+import { TokensService } from '../../core/stores/tokens.service';
+import { ExitGroup } from '../../core/guards/exit-group.guard';
 echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart]);
 
 @Component({
@@ -30,8 +32,9 @@ echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart]);
   ],
   providers: [provideEchartsCore({ echarts })],
 })
-export class DataGroupComponent implements OnInit {
+export class DataGroupComponent implements OnInit,ExitGroup {
   private readonly groupService: GroupFacade = inject(GroupFacade);
+  private readonly tokenService: TokensService = inject(TokensService)
   weightByCompetence: { [id: number]: number } = {
     1: 0.0238,
     3: 0.0238,
@@ -108,7 +111,7 @@ export class DataGroupComponent implements OnInit {
   ngOnInit() {
     this.groupService.getGroup().subscribe({
       next: (resp: Group[]) => {
-        //console.log(resp);
+        console.log(resp);
         this.groupName = resp[0].nameGroup;
         this.dataGroup = resp[0].users;
         let nameList: string[] = [];
@@ -153,10 +156,6 @@ export class DataGroupComponent implements OnInit {
           this.competences.push(this.getLetter(this.totalScoreCompetence[i]));
           this.capacity1.push(this.getLetter(this.totalScoreCapacity1[i]));
           this.capacity2.push(this.getLetter(this.totalScoreCapacity2[i]));
-          //console.log('competencia: ' + this.totalScoreCompetence[i]);
-          //console.log('capacidad 1: ' + this.totalScoreCapacity1[i]);
-          //console.log('capacidad 2: ' + this.totalScoreCapacity2[i]);
-
         }
 
         this.chartOption = {
@@ -198,5 +197,14 @@ export class DataGroupComponent implements OnInit {
     if (score > 0.65 && score <= 0.85) return 'A';
     if (score > 0.85) return 'AD';
     throw new Error(`Score fuera de rango: ${score}`);
+  }
+
+  clearTokens() {
+    this.tokenService.accessToken = "";
+    this.tokenService.refreshToken = "";
+  }
+
+  exitGroup(): boolean {
+    return confirm('¿Desea salir del grupo actual?')
   }
 }

@@ -15,5 +15,6 @@ export class DialogCreateComponent {
   ngOnInit(): void {
     console.log(this.data.groupName)
     console.log(this.data.groupData.serialGroup);
+    console.log(this.data)
   }
 }

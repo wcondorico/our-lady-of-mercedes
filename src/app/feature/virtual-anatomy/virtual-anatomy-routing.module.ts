@@ -6,6 +6,8 @@ import { PresentationComponent } from './pages/presentation/presentation.compone
 import { DataGroupComponent } from './pages/data-group/data-group.component';
 import { SearchGroupComponent } from './pages/search-group/search-group.component';
 import { CreateGroupComponent } from './pages/create-group/create-group.component';
+import { authGroupGuard } from './core/guards/auth-group.guard';
+import { exitGroupGuard } from './core/guards/exit-group.guard';
 
 const routes: Routes = [
   {
@@ -19,7 +21,9 @@ const routes: Routes = [
   },
   {
     path: VIRTUAL_ANATOMY_PAGES.DATA_GROUPS,
-    component: DataGroupComponent
+    component: DataGroupComponent,
+    canActivate: [authGroupGuard],
+    canDeactivate: [exitGroupGuard]
   },
   {
     path: VIRTUAL_ANATOMY_PAGES.CREATE_GROUP,

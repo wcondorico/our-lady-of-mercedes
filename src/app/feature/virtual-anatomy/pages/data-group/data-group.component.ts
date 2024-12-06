@@ -15,6 +15,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart } from 'echarts/charts';
 import { TokensService } from '../../core/stores/tokens.service';
 import { ExitGroup } from '../../core/guards/exit-group.guard';
+import { PdfService } from '../../core/stores/pdf.service';
 echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart]);
 
 @Component({
@@ -34,7 +35,9 @@ echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart]);
 })
 export class DataGroupComponent implements OnInit,ExitGroup {
   private readonly groupService: GroupFacade = inject(GroupFacade);
-  private readonly tokenService: TokensService = inject(TokensService)
+  private readonly tokenService: TokensService = inject(TokensService);
+  private readonly pdfService: PdfService = inject(PdfService);
+
   weightByCompetence: { [id: number]: number } = {
     1: 0.0238,
     3: 0.0238,
@@ -174,7 +177,11 @@ export class DataGroupComponent implements OnInit,ExitGroup {
             },
           ],
         };
-
+        this.pdfService.accessData = this.dataGroup;
+        this.pdfService.accessGroupName = this.groupName;
+        this.pdfService.accessC1 = this.capacity1;
+        this.pdfService.accessC2 = this.capacity2;
+        this.pdfService.accessComp = this.competences;
       },
       error: (err) => {
         console.log('este es el error: ', err);
@@ -209,8 +216,17 @@ export class DataGroupComponent implements OnInit,ExitGroup {
     return confirm('¿Desea salir del grupo actual?')
   }
 
-  changeView(): void {
-    this.isDataView = !this.isDataView;
-    this.isGraficsView = !this.isGraficsView;
+  selectData(): void {
+    this.isDataView = true;
+    this.isGraficsView = false;
+  }
+
+  selectGrafics(): void {
+    this.isDataView = false;
+    this.isGraficsView = true;
+  }
+
+  generatePdf() {
+    this.pdfService.generatePDF();
   }
 }

@@ -96,6 +96,13 @@
           color: #ffffff;
         }
       }
+
+      & .actived {
+        background-color: rgb(132, 81, 179);
+        transform: scale(1);
+        color: #ffffff;
+        pointer-events: none;
+      }
     }
 
     &__data {

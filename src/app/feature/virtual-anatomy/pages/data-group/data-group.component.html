@@ -38,8 +38,8 @@
   </div>
 
   <div class="presentation__buttons">
-    <button (click)="selectData()">Datos</button>
-    <button (click)="selectGrafics()">Gráfico</button>
+    <button (click)="selectData()"  [ngClass]="{'actived': isDataView}">Datos</button>
+    <button (click)="selectGrafics()"  [ngClass]="{'actived': isGraficsView}">Gráfico</button>
   </div>
 
   <div *ngIf="isDataView">

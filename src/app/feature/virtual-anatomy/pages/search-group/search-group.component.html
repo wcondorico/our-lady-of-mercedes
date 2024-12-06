@@ -23,3 +23,5 @@
   </mat-form-field>
   <button mat-raised-button (click)="searchGroup()">Buscar</button>
 </section>
+<mat-progress-spinner *ngIf="onSpinner == true" class="spinner" [color]="'primary'" [mode]="'indeterminate'" [value]="50">
+</mat-progress-spinner>

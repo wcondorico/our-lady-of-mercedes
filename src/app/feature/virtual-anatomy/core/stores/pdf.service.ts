@@ -211,7 +211,7 @@ export class PdfService {
       addPageNumbers();
 
       //Guardar PDF
-      pdf.save('reporte_ejemplo.pdf');
+      pdf.save('Reporte de resultados.pdf');
 
     };
 

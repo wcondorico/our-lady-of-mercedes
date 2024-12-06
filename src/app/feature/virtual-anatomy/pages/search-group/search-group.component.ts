@@ -10,6 +10,7 @@ import { environment } from 'src/environment/environments';
 import { GroupFacade } from '../../aplication/group.facade';
 import { SearchGroupBody } from '../../core/interfaces/search-group.interface';
 import { TokensService } from '../../core/stores/tokens.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-search-group',
@@ -24,7 +25,8 @@ import { TokensService } from '../../core/stores/tokens.service';
     MatButtonModule,
     MatIconModule,
     CommonModule,
-    RouterLink
+    RouterLink,
+    MatProgressSpinnerModule
   ]
 })
 export class SearchGroupComponent {
@@ -32,10 +34,12 @@ export class SearchGroupComponent {
   private readonly groupService: GroupFacade = inject(GroupFacade);
   private readonly router: Router = inject(Router);
   private readonly tokenService: TokensService = inject(TokensService);
-  name = '';
-  serial = '';
+  name: string = '';
+  serial: string = '';
+  onSpinner: boolean = false;
 
   searchGroup() {
+    this.onSpinner = true;
     const body: SearchGroupBody = {
       nameGroup: this.name.toUpperCase(),
       serialGroup: this.serial,
@@ -43,6 +47,7 @@ export class SearchGroupComponent {
 
     this.groupService
       .searchGroup(body).subscribe(token => {
+        this.onSpinner = false;
         this.tokenService.accessToken = token.access;
         this.tokenService.refreshToken = token.refresh;
         this.router.navigate(['/anatomia-virtual/datos-grupos']);

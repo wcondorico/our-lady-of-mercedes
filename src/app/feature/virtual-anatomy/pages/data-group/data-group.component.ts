@@ -106,7 +106,8 @@ export class DataGroupComponent implements OnInit,ExitGroup {
   capacity2: string[] = [];
   groupName!: string;
   totalScores: number[] = [];
-  grafics: boolean = true;
+  isDataView: boolean = true;
+  isGraficsView: boolean = false;
 
   ngOnInit() {
     this.groupService.getGroup().subscribe({
@@ -206,5 +207,10 @@ export class DataGroupComponent implements OnInit,ExitGroup {
 
   exitGroup(): boolean {
     return confirm('¿Desea salir del grupo actual?')
+  }
+
+  changeView(): void {
+    this.isDataView = !this.isDataView;
+    this.isGraficsView = !this.isGraficsView;
   }
 }

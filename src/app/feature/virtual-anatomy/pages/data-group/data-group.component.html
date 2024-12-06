@@ -32,45 +32,58 @@
     </div>
   </div>
 
-  <div class="presentation__data mat-elevation-z8">
-    <table mat-table [dataSource]="dataTable">
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      <ng-container matColumnDef="name" >
-        <th mat-header-cell *matHeaderCellDef style="width: 180px;">Nombre</th>
-        <td mat-cell *matCellDef="let element" style="width: 180px;">{{ element.name }}</td>
-      </ng-container>
-      <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef style="width: 180px;">Apellido</th>
-        <td mat-cell *matCellDef="let element" style="width: 180px;">{{ element.lastName }}</td>
-      </ng-container>
-      <ng-container matColumnDef="grade">
-        <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: center;">Grado</th>
-        <td mat-cell *matCellDef="let element" style="width: 80px; text-align: center;">{{ element.grade}}</td>
-      </ng-container>
-      <ng-container matColumnDef="section">
-        <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: center;">Sección</th>
-        <td mat-cell *matCellDef="let element" style="width: 80px; text-align: center;">{{ element.section}}</td>
-      </ng-container>
-      <ng-container matColumnDef="createAt">
-        <th mat-header-cell *matHeaderCellDef style="width: 120px;">Fecha</th>
-        <td mat-cell *matCellDef="let element" style="width: 120px;">{{ element.createAt | date:"medium" }}</td>
-      </ng-container>
-      <ng-container matColumnDef="capacity1">
-        <th mat-header-cell *matHeaderCellDef style="width: 200px; text-align: center;">Comprende y aplica conocimientos científicos (capacidad 1)</th>
-        <td mat-cell *matCellDef="let element; let i = index" style="width: 200px; text-align: center;">{{ capacity1[i] }}</td>
-      </ng-container>
-      <ng-container matColumnDef="capacity2">
-        <th mat-header-cell *matHeaderCellDef style="width: 200px; text-align: center;">Evalúa las implicancias científicas y tecnológicas (capacidad 2)</th>
-        <td mat-cell *matCellDef="let element; let i = index" style="width: 200px; text-align: center;">{{ capacity2[i] }}</td>
-      </ng-container>
-      <ng-container matColumnDef="competence">
-        <th mat-header-cell *matHeaderCellDef style="width: 200px; text-align: center;">Explica el mundo físico basado en conocimientos (competencia)</th>
-        <td mat-cell *matCellDef="let element; let i = index" style="width: 200px; text-align: center;">{{ competences[i] }}</td>
-      </ng-container>
-    </table>
+  <div class="presentation__buttons">
+    <button (click)="changeView()">Datos</button>
+    <button (click)="changeView()">Gráfico</button>
   </div>
-  <mat-paginator showFirstLastButtons pageSize="10" hidePageSize="true" class="presentation__paginator">
-  </mat-paginator>
-  <div *ngIf="grafics" echarts [options]="chartOption" class="demo-chart"></div>
+
+  <div *ngIf="isDataView">
+    <div class="presentation__data mat-elevation-z8">
+      <table mat-table [dataSource]="dataTable">
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef style="width: 180px;">Nombre</th>
+          <td mat-cell *matCellDef="let element" style="width: 180px;">{{ element.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef style="width: 180px;">Apellido</th>
+          <td mat-cell *matCellDef="let element" style="width: 180px;">{{ element.lastName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="grade">
+          <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: center;">Grado</th>
+          <td mat-cell *matCellDef="let element" style="width: 80px; text-align: center;">{{ element.grade}}</td>
+        </ng-container>
+        <ng-container matColumnDef="section">
+          <th mat-header-cell *matHeaderCellDef style="width: 80px; text-align: center;">Sección</th>
+          <td mat-cell *matCellDef="let element" style="width: 80px; text-align: center;">{{ element.section}}</td>
+        </ng-container>
+        <ng-container matColumnDef="createAt">
+          <th mat-header-cell *matHeaderCellDef style="width: 120px;">Fecha</th>
+          <td mat-cell *matCellDef="let element" style="width: 120px;">{{ element.createAt | date:"medium" }}</td>
+        </ng-container>
+        <ng-container matColumnDef="capacity1">
+          <th mat-header-cell *matHeaderCellDef style="width: 200px; text-align: center;">Comprende y aplica
+            conocimientos científicos (capacidad 1)</th>
+          <td mat-cell *matCellDef="let element; let i = index" style="width: 200px; text-align: center;">{{
+            capacity1[i] }}</td>
+        </ng-container>
+        <ng-container matColumnDef="capacity2">
+          <th mat-header-cell *matHeaderCellDef style="width: 200px; text-align: center;">Evalúa las implicancias
+            científicas y tecnológicas (capacidad 2)</th>
+          <td mat-cell *matCellDef="let element; let i = index" style="width: 200px; text-align: center;">{{
+            capacity2[i] }}</td>
+        </ng-container>
+        <ng-container matColumnDef="competence">
+          <th mat-header-cell *matHeaderCellDef style="width: 200px; text-align: center;">Explica el mundo físico basado
+            en conocimientos (competencia)</th>
+          <td mat-cell *matCellDef="let element; let i = index" style="width: 200px; text-align: center;">{{
+            competences[i] }}</td>
+        </ng-container>
+      </table>
+    </div>
+    <mat-paginator showFirstLastButtons pageSize="10" hidePageSize="true" class="presentation__paginator">
+    </mat-paginator>
+  </div>
+  <div *ngIf="isGraficsView" echarts [options]="chartOption" class="presentation__grafics"></div>
 </section>

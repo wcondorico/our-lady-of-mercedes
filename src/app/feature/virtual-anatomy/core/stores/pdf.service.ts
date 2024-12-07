@@ -52,7 +52,7 @@ export class PdfService {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const logoWidth = 20;
-    const itemsPerPage = 20;
+    const itemsPerPage = 12;
     let currentY = 40;
 
     const grupo = this.accessGroupName;

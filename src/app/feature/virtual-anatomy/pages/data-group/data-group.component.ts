@@ -24,6 +24,7 @@ import {
   LegendComponent,
   LegendComponentOption
 } from 'echarts/components';
+import { DataGroup } from './table.interface';
 echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart, TooltipComponent,
   LegendComponent,
   PieChart,
@@ -117,7 +118,7 @@ export class DataGroupComponent implements OnInit, ExitGroup {
   ];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataGroup: User[] = [];
-  dataTable!: MatTableDataSource<User>;
+  dataTable!: MatTableDataSource<DataGroup>;
   totalScoreCompetence: number[] = [];
   totalScoreCapacity1: number[] = [];
   totalScoreCapacity2: number[] = [];
@@ -137,8 +138,7 @@ export class DataGroupComponent implements OnInit, ExitGroup {
         this.dataGroup = resp[0].users;
         let nameList: string[] = [];
         let points: number[] = [];
-        this.dataTable = new MatTableDataSource<User>(this.dataGroup);
-        this.dataTable.paginator = this.paginator;
+
 
         for (let i = 0; i < this.dataGroup.length; i++) {
           let totalScoreCompetence = 0;
@@ -291,6 +291,19 @@ export class DataGroupComponent implements OnInit, ExitGroup {
         this.pdfService.accessC1 = this.capacity1;
         this.pdfService.accessC2 = this.capacity2;
         this.pdfService.accessComp = this.competences;
+
+        const dataGroup: DataGroup[] = []
+
+        this.dataGroup.forEach((user,index) => {
+          dataGroup.push({
+            user: user,
+            c1: this.capacity1[index],
+            c2: this.capacity2[index],
+            comp: this.competences[index]
+          })
+        })
+        this.dataTable = new MatTableDataSource<DataGroup>(dataGroup);
+        this.dataTable.paginator = this.paginator;
       },
       error: (err) => {
         console.log('este es el error: ', err);

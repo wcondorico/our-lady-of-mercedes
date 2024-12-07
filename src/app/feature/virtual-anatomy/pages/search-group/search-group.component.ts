@@ -11,6 +11,8 @@ import { GroupFacade } from '../../aplication/group.facade';
 import { SearchGroupBody } from '../../core/interfaces/search-group.interface';
 import { TokensService } from '../../core/stores/tokens.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DialogErrorComponent } from '../../core/components/dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-search-group',
@@ -26,7 +28,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatIconModule,
     CommonModule,
     RouterLink,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ]
 })
 export class SearchGroupComponent {
@@ -37,8 +40,13 @@ export class SearchGroupComponent {
   name: string = '';
   serial: string = '';
   onSpinner: boolean = false;
+  private readonly dialog: MatDialog = inject(MatDialog);
 
   searchGroup() {
+    if(this.name === '' || this.serial === ''){
+      confirm("Debe ingresar los datos completos del grupo")
+    }
+    else {
     this.onSpinner = true;
     const body: SearchGroupBody = {
       nameGroup: this.name.toUpperCase(),
@@ -46,11 +54,22 @@ export class SearchGroupComponent {
     };
 
     this.groupService
-      .searchGroup(body).subscribe(token => {
-        this.onSpinner = false;
-        this.tokenService.accessToken = token.access;
-        this.tokenService.refreshToken = token.refresh;
-        this.router.navigate(['/anatomia-virtual/datos-grupos']);
+      .searchGroup(body).subscribe({
+        next: (token) => {
+          this.onSpinner = false;
+          this.tokenService.accessToken = token.access;
+          this.tokenService.refreshToken = token.refresh;
+          this.router.navigate(['/anatomia-virtual/datos-grupos']);
+        },
+        error: (err) => {
+          this.onSpinner = false;
+          this.dialog.open(DialogErrorComponent, {
+            data: "Por favor ingresa correctamente los datos del grupo"
+          })
+
+        }
+
       })
+    }
   }
 }

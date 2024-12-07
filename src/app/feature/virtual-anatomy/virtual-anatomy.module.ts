@@ -10,8 +10,7 @@ import { SearchGroupComponent } from './pages/search-group/search-group.componen
 import { VirtualAnatomyRoutingModule } from './virtual-anatomy-routing.module';
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   providers: [
     {
       provide: GroupFacade,

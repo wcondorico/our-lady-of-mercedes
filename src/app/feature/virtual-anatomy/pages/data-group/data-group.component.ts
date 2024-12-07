@@ -3,27 +3,19 @@ import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Data, RouterModule } from '@angular/router';
-import { Group, User } from '../../core/interfaces/search-group.interface';
-import { GroupFacade } from '../../aplication/group.facade';
-import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import * as echarts from 'echarts/core';
+import { RouterModule } from '@angular/router';
 import { EChartsOption } from 'echarts';
-import { BarChart } from 'echarts/charts';
-import { GridComponent } from 'echarts/components';
-import { CanvasRenderer } from 'echarts/renderers';
-import { LineChart } from 'echarts/charts';
-import { TokensService } from '../../core/stores/tokens.service';
-import { ExitGroup } from '../../core/guards/exit-group.guard';
-import { PdfService } from '../../core/stores/pdf.service';
-import { PieChart, PieSeriesOption } from 'echarts/charts';
+import { BarChart, LineChart, PieChart } from 'echarts/charts';
+import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
+import * as echarts from 'echarts/core';
 import { LabelLayout } from 'echarts/features';
-import {
-  TooltipComponent,
-  TooltipComponentOption,
-  LegendComponent,
-  LegendComponentOption
-} from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
+import { GroupFacade } from '../../aplication/group.facade';
+import { ExitGroup } from '../../core/guards/exit-group.guard';
+import { Group, User } from '../../core/interfaces/search-group.interface';
+import { PdfService } from '../../core/stores/pdf.service';
+import { TokensService } from '../../core/stores/tokens.service';
 import { DataGroup } from './table.interface';
 echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart, TooltipComponent,
   LegendComponent,
@@ -201,10 +193,10 @@ export class DataGroupComponent implements OnInit, ExitGroup {
         let countLettersC2: number[] = this.countLetter(this.capacity2);
         let countLettersComp: number[] = this.countLetter(this.competences);
 
-        let countOfAD = countLettersC1[0] + countLettersC2[0] + countLettersComp[0];
-        let countOfA = countLettersC1[1] + countLettersC2[1] + countLettersComp[1];
-        let countOfB = countLettersC1[2] + countLettersC2[2] + countLettersComp[2];
-        let countOfC = countLettersC1[3] + countLettersC2[3] + countLettersComp[3];
+        //let countOfAD = countLettersC1[0] + countLettersC2[0] + countLettersComp[0];
+        //let countOfA = countLettersC1[1] + countLettersC2[1] + countLettersComp[1];
+        //let countOfB = countLettersC1[2] + countLettersC2[2] + countLettersComp[2];
+        //let countOfC = countLettersC1[3] + countLettersC2[3] + countLettersComp[3];
 
         this.chartOptionCap1 = {
           tooltip: {
@@ -220,7 +212,6 @@ export class DataGroupComponent implements OnInit, ExitGroup {
               type: 'pie',
               radius: ['40%', '90%'],
               center: ['50%', '80%'],
-              // adjust the start and end angle
               startAngle: 180,
               endAngle: 360,
               data: [
@@ -247,7 +238,6 @@ export class DataGroupComponent implements OnInit, ExitGroup {
               type: 'pie',
               radius: ['40%', '90%'],
               center: ['50%', '80%'],
-              // adjust the start and end angle
               startAngle: 180,
               endAngle: 360,
               data: [
@@ -274,7 +264,6 @@ export class DataGroupComponent implements OnInit, ExitGroup {
               type: 'pie',
               radius: ['40%', '90%'],
               center: ['50%', '80%'],
-              // adjust the start and end angle
               startAngle: 180,
               endAngle: 360,
               data: [

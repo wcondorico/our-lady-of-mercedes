@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgIf, NgOptimizedImage } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { MODULES_ROUTES } from '../../../../core/routes/modules.routes';
 import { VIRTUAL_ANATOMY_PAGES } from '../../../../core/routes/virtual-anatomy.routes';
@@ -20,9 +19,7 @@ import { VIRTUAL_ANATOMY_PAGES } from '../../../../core/routes/virtual-anatomy.r
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    NgOptimizedImage,
-    RouterLink,
-    NgIf
+    RouterLink
   ],
 })
 export class PresentationComponent {

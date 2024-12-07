@@ -6,7 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 
 import { CreateGroupBody } from 'src/app/feature/virtual-anatomy/core/interfaces/create-group.interface';
@@ -29,32 +29,38 @@ import { DialogCreateComponent } from '../../core/components/dialog-create/dialo
     CommonModule,
     MatDialogModule,
     RouterLink,
-    MatProgressSpinnerModule
-  ]
+    MatProgressSpinnerModule,
+  ],
 })
 export class CreateGroupComponent {
-  apiUrl = signal<string>(environment.api)
+  apiUrl = signal<string>(environment.api);
   private readonly groupService: GroupFacade = inject(GroupFacade);
   private readonly dialog: MatDialog = inject(MatDialog);
   onSpinner: boolean = false;
   name: string = '';
 
   createGroup() {
-    const body: CreateGroupBody = {
-      nameGroup: this.name.toUpperCase()
+
+    if (this.name === '') {
+      confirm("No puede crear un grupo de nombre vacio")
+    } else {
+      const body: CreateGroupBody = {
+        nameGroup: this.name.toUpperCase(),
+      };
+
+      this.onSpinner = true;
+
+      this.groupService.createGroup(body).subscribe((resp) => {
+        this.onSpinner = false;
+        this.name = '';
+        this.dialog.open(DialogCreateComponent, {
+          data: {
+            groupName: body.nameGroup,
+            groupData: resp,
+          },
+        });
+      });
     }
 
-    this.onSpinner = true;
-    
-    this.groupService.createGroup(body).subscribe(resp => {
-      this.onSpinner = false;
-      this.name = '';
-      this.dialog.open(DialogCreateComponent, {
-        data: {
-          groupName: body.nameGroup,
-          groupData: resp
-        }
-      })
-    });
   }
 }

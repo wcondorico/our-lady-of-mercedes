@@ -324,7 +324,9 @@ export class DataGroupComponent implements OnInit, ExitGroup {
   }
 
   exitGroup(): boolean {
-    return confirm('¿Desea salir del grupo actual?')
+    const exit = confirm('¿Desea salir del grupo actual?');
+    if (exit) this.clearTokens();
+    return exit;
   }
 
   selectData(): void {

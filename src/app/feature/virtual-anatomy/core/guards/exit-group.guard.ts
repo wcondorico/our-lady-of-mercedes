@@ -5,5 +5,6 @@ export interface ExitGroup {
 }
 
 export const exitGroupGuard: CanDeactivateFn<ExitGroup> = (component: ExitGroup, currentRoute, currentState, nextState) => {
+  
   return component.exitGroup? component.exitGroup():true;
 };

@@ -72,15 +72,39 @@ export class SearchGroupComponent {
           this.router.navigate(['/anatomia-virtual/datos-grupos']);
         },
         error: (err) => {
+          console.log('este es el error: ',err)
           this.onSpinner = false;
-          this.dialog.open(DialogErrorComponent, {
-            data: {
-              tittle: "¡Hubo un error en la busqueda!",
-              text: "Por favor ingresa correctamente los datos del grupo que busca"
-            },
-            enterAnimationDuration,
-            exitAnimationDuration,
-          })
+
+          if ( err.status === 0 ) {
+            this.dialog.open(DialogErrorComponent, {
+              data: {
+                tittle: "¡Hubo un error de conexión!",
+                text: "Por favor inténtalo mas tarde"
+              },
+              enterAnimationDuration,
+              exitAnimationDuration,
+            })
+          } else if ( err.status === 400 ) {
+            this.dialog.open(DialogErrorComponent, {
+              data: {
+                tittle: "¡Hubo un error en la busqueda!",
+                text: "Por favor ingresa correctamente los datos del grupo que busca"
+              },
+              enterAnimationDuration,
+              exitAnimationDuration,
+            })
+          } else {
+            this.dialog.open(DialogErrorComponent, {
+              data: {
+                tittle: "¡Ocurrió un error!",
+                text: "Ocurrió un error inesperado. Inténtalo nuevamente más tarde"
+              },
+              enterAnimationDuration,
+              exitAnimationDuration,
+            })
+          }
+
+
 
         }
 

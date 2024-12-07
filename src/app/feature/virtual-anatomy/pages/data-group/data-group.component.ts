@@ -184,7 +184,7 @@ export class DataGroupComponent implements OnInit, ExitGroup {
         this.chartOption = {
           xAxis: {
             type: 'category',
-            data: nameList
+            data: this.dataList.map((_,i) => i+1)
           },
           yAxis: {
             type: 'value',
@@ -192,7 +192,7 @@ export class DataGroupComponent implements OnInit, ExitGroup {
           series: [
             {
               data: points,
-              type: 'line',
+              type: 'bar',
             },
           ],
         };

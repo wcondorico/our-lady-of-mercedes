@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { RouterModule } from '@angular/router';
+import { Data, RouterModule } from '@angular/router';
 import { Group, User } from '../../core/interfaces/search-group.interface';
 import { GroupFacade } from '../../aplication/group.facade';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
@@ -49,6 +49,7 @@ echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart, TooltipComponen
   providers: [provideEchartsCore({ echarts })],
 })
 export class DataGroupComponent implements OnInit, ExitGroup {
+  private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef)
   private readonly groupService: GroupFacade = inject(GroupFacade);
   private readonly tokenService: TokensService = inject(TokensService);
   private readonly pdfService: PdfService = inject(PdfService);
@@ -117,7 +118,8 @@ export class DataGroupComponent implements OnInit, ExitGroup {
     'competence',
   ];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  dataGroup: User[] = [];
+  dataGroup: DataGroup[] = [];
+  dataList: User[] = [];
   dataTable!: MatTableDataSource<DataGroup>;
   totalScoreCompetence: number[] = [];
   totalScoreCapacity1: number[] = [];
@@ -135,33 +137,33 @@ export class DataGroupComponent implements OnInit, ExitGroup {
       next: (resp: Group[]) => {
         console.log(resp);
         this.groupName = resp[0].nameGroup;
-        this.dataGroup = resp[0].users;
+        this.dataList = resp[0].users;
         let nameList: string[] = [];
         let points: number[] = [];
 
 
-        for (let i = 0; i < this.dataGroup.length; i++) {
+        for (let i = 0; i < this.dataList.length; i++) {
           let totalScoreCompetence = 0;
           let totalScoreCapacity1 = 0;
           let totalScoreCapacity2 = 0;
           let totalScore = 0;
-          nameList.push(this.dataGroup[i].name);
+          nameList.push(this.dataList[i].name);
 
-          for (let j = 0; j < this.dataGroup[i].answer.length; j++) {
-            const qId = this.dataGroup[i].answer[j].question.id;
-            totalScore += this.dataGroup[i].answer[j].answerTF;
+          for (let j = 0; j < this.dataList[i].answer.length; j++) {
+            const qId = this.dataList[i].answer[j].question.id;
+            totalScore += this.dataList[i].answer[j].answerTF;
             const weightCompetence: number = this.getWeightByCompetence(qId);
             totalScoreCompetence +=
-              this.dataGroup[i].answer[j].answerTF * weightCompetence;
+              this.dataList[i].answer[j].answerTF * weightCompetence;
             if (this.weightByCapacity1[qId]) {
               const weightCapacity1: number = this.getWeightByCapacity(qId);
               totalScoreCapacity1 +=
-                this.dataGroup[i].answer[j].answerTF * weightCapacity1;
+                this.dataList[i].answer[j].answerTF * weightCapacity1;
             }
             if (this.weightByCapacity2[qId]) {
               const weightCapacity2: number = this.getWeightByCapacity(qId);
               totalScoreCapacity2 +=
-                this.dataGroup[i].answer[j].answerTF * weightCapacity2;
+                this.dataList[i].answer[j].answerTF * weightCapacity2;
             }
           }
           this.totalScoreCompetence.push(
@@ -287,22 +289,20 @@ export class DataGroupComponent implements OnInit, ExitGroup {
 
 
         this.pdfService.accessGroupName = this.groupName;
-        this.pdfService.accessData = this.dataGroup;
+        this.pdfService.accessData = this.dataList;
         this.pdfService.accessC1 = this.capacity1;
         this.pdfService.accessC2 = this.capacity2;
         this.pdfService.accessComp = this.competences;
 
-        const dataGroup: DataGroup[] = []
-
-        this.dataGroup.forEach((user,index) => {
-          dataGroup.push({
+        this.dataList.forEach((user,index) => {
+          this.dataGroup.push({
             user: user,
             c1: this.capacity1[index],
             c2: this.capacity2[index],
             comp: this.competences[index]
           })
         })
-        this.dataTable = new MatTableDataSource<DataGroup>(dataGroup);
+        this.dataTable = new MatTableDataSource<DataGroup>(this.dataGroup);
         this.dataTable.paginator = this.paginator;
       },
       error: (err) => {
@@ -341,6 +341,11 @@ export class DataGroupComponent implements OnInit, ExitGroup {
   selectData(): void {
     this.isDataView = true;
     this.isGraficsView = false;
+    this.dataTable = new MatTableDataSource<DataGroup>(this.dataGroup);
+    this.cdr.detectChanges();
+    if (this.paginator) {
+      this.dataTable.paginator = this.paginator;
+    }
   }
 
   selectGrafics(): void {

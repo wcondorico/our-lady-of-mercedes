@@ -87,7 +87,7 @@
         </ng-container>
       </table>
     </div>
-    <mat-paginator showFirstLastButtons pageSize="10" hidePageSize="true" class="presentation__paginator">
+    <mat-paginator showFirstLastButtons #paginator pageSize="10" hidePageSize="true" class="presentation__paginator">
     </mat-paginator>
   </div>
   <div *ngIf="isGraficsView" class="presentation__grafics">

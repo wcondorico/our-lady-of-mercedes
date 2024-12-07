@@ -9,14 +9,14 @@
   <p>BUSCAR GRUPO</p>
   <mat-form-field class="presentation__create" appearance="fill">
     <mat-label>Ingrese el nombre de grupo</mat-label>
-    <input matInput type="text" [(ngModel)]="name" class="presentation__create--input" required/>
+    <input matInput type="text" [(ngModel)]="name" class="presentation__create--input"/>
     <button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name = ''">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
   <mat-form-field class="presentation__create" appearance="fill">
     <mat-label>Ingrese el código de grupo</mat-label>
-    <input matInput type="text" [(ngModel)]="serial" class="presentation__create--input" required/>
+    <input matInput type="text" [(ngModel)]="serial" class="presentation__create--input"/>
     <button *ngIf="serial" matSuffix mat-icon-button aria-label="Clear" (click)="serial = ''">
       <mat-icon>close</mat-icon>
     </button>

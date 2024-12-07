@@ -13,6 +13,7 @@ import { CreateGroupBody } from 'src/app/feature/virtual-anatomy/core/interfaces
 import { environment } from 'src/environment/environments';
 import { GroupFacade } from '../../aplication/group.facade';
 import { DialogCreateComponent } from '../../core/components/dialog-create/dialog-create.component';
+import { DialogErrorComponent } from '../../core/components/dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-create-group',
@@ -40,10 +41,19 @@ export class CreateGroupComponent {
   name: string = '';
 
   createGroup() {
-
-    if (this.name === '') {
-      confirm("No puede crear un grupo de nombre vacio")
-    } else {
+    const enterAnimationDuration = '300ms';
+    const exitAnimationDuration = '300ms';
+    if (!this.name) {
+      this.dialog.open(DialogErrorComponent, {
+        data: {
+          tittle: '¡Datos incompletos!',
+          text: 'Por favor ingresa el nombre del grupo',
+        },
+        enterAnimationDuration,
+        exitAnimationDuration,
+      });
+    }
+    if (/^[a-zA-Z0-9]+$/.test(this.name)) {
       const body: CreateGroupBody = {
         nameGroup: this.name.toUpperCase(),
       };
@@ -58,9 +68,20 @@ export class CreateGroupComponent {
             groupName: body.nameGroup,
             groupData: resp,
           },
+          enterAnimationDuration,
+          exitAnimationDuration,
         });
       });
     }
-
+    if (!/^[a-zA-Z0-9]+$/.test(this.name) && this.name) {
+      this.dialog.open(DialogErrorComponent, {
+        data: {
+          tittle: '¡Datos inválidos!',
+          text: 'Por favor ingresa solo letras y números',
+        },
+        enterAnimationDuration,
+        exitAnimationDuration,
+      });
+    }
   }
 }

@@ -1,16 +1,15 @@
-<div>
-
-  <h1 mat-dialog-title>¿Felicidades!, Grupo creado</h1>
-  <div mat-dialog-content>Por favor guarda las credenciales de tu grupo para que puedas compartirlo con tu grupo académico</div>
-  <div mat-dialog-content>
+<div style="padding: 20px;">
+  <h1 mat-dialog-title style="text-align: center; font-size: 28px;">¡Felicidades! Grupo creado</h1>
+  <div mat-dialog-content style="font-size: 18px; padding: 0 24px;">Por favor guarda las credenciales de tu grupo para que puedas compartirlo con tu grupo académico</div>
+  <div mat-dialog-content style="font-size: 18px;">
     <p><strong>Nombre del Grupo</strong></p>
     {{ data.groupName }}
   </div>
-  <div mat-dialog-content>
+  <div mat-dialog-content style="font-size: 18px;">
     <p><strong>Código del Grupo</strong></p>
     {{ data.groupData.serialGroup }}
   </div>
-  <div mat-dialog-actions>
-    <button mat-button mat-dialog-close>Close</button>
+  <div mat-dialog-actions style="margin-bottom: 10px; display: flex; justify-content: center;">
+    <button mat-button mat-dialog-close style="padding: 30px 40px; background-color: #8961cf; color: white; font-size: 22px;">Close</button>
   </div>
 </div>

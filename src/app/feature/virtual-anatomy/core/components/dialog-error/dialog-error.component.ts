@@ -10,5 +10,5 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
   imports: [MatDialogModule, MatButtonModule]
 })
 export class DialogErrorComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {tittle: string, text: string}) { }
 }

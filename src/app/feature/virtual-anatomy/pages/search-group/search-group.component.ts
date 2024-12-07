@@ -43,8 +43,18 @@ export class SearchGroupComponent {
   private readonly dialog: MatDialog = inject(MatDialog);
 
   searchGroup() {
+    const enterAnimationDuration = '300ms';
+    const exitAnimationDuration = '300ms';
+
     if(this.name === '' || this.serial === ''){
-      confirm("Debe ingresar los datos completos del grupo")
+      this.dialog.open(DialogErrorComponent, {
+        data: {
+          tittle: "¡Datos incompletos!",
+          text: "Por favor ingresa los datos que faltan"
+        },
+        enterAnimationDuration,
+        exitAnimationDuration,
+      })
     }
     else {
     this.onSpinner = true;
@@ -64,7 +74,12 @@ export class SearchGroupComponent {
         error: (err) => {
           this.onSpinner = false;
           this.dialog.open(DialogErrorComponent, {
-            data: "Por favor ingresa correctamente los datos del grupo"
+            data: {
+              tittle: "¡Hubo un error en la busqueda!",
+              text: "Por favor ingresa correctamente los datos del grupo que busca"
+            },
+            enterAnimationDuration,
+            exitAnimationDuration,
           })
 
         }

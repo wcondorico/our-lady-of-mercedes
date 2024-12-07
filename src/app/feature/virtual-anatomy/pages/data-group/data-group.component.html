@@ -38,8 +38,8 @@
   </div>
 
   <div class="presentation__buttons">
-    <button (click)="selectData()"  [ngClass]="{'actived': isDataView}">Datos</button>
-    <button (click)="selectGrafics()"  [ngClass]="{'actived': isGraficsView}">Gráfico</button>
+    <button (click)="selectData()" [ngClass]="{'actived': isDataView}">Datos</button>
+    <button (click)="selectGrafics()" [ngClass]="{'actived': isGraficsView}">Gráfico</button>
   </div>
 
   <div *ngIf="isDataView">
@@ -90,5 +90,22 @@
     <mat-paginator showFirstLastButtons pageSize="10" hidePageSize="true" class="presentation__paginator">
     </mat-paginator>
   </div>
-  <div *ngIf="isGraficsView" echarts [options]="chartOption" class="presentation__grafics"></div>
+  <div *ngIf="isGraficsView" class="presentation__grafics">
+    <div class="presentation__grafics--block">
+      <p>Respuestas correctas</p>
+      <div echarts [options]="chartOption" style="width: 90%; height: 400px;"></div>
+    </div>
+    <div class="presentation__grafics--block">
+      <p>Comprende y aplica conocimientos científicos (capacidad 1)</p>
+      <div echarts [options]="chartOptionCap1" style="width: 400px; height: 400px;"></div>
+    </div>
+    <div class="presentation__grafics--block">
+      <p>Evalúa las implicancias científicas y tecnológicas (capacidad 2)</p>
+      <div echarts [options]="chartOptionCap2" style="width: 400px; height: 400px;"></div>
+    </div>
+    <div class="presentation__grafics--block">
+      <p>Explica el mundo físico basado en conocimientos (competencia)</p>
+      <div echarts [options]="chartOptionComp" style="width: 400px; height: 400px;"></div>
+    </div>
+  </div>
 </section>

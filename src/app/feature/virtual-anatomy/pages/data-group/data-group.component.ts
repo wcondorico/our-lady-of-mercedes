@@ -16,7 +16,21 @@ import { LineChart } from 'echarts/charts';
 import { TokensService } from '../../core/stores/tokens.service';
 import { ExitGroup } from '../../core/guards/exit-group.guard';
 import { PdfService } from '../../core/stores/pdf.service';
-echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart]);
+import { PieChart, PieSeriesOption } from 'echarts/charts';
+import { LabelLayout } from 'echarts/features';
+import {
+  TooltipComponent,
+  TooltipComponentOption,
+  LegendComponent,
+  LegendComponentOption
+} from 'echarts/components';
+echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart, TooltipComponent,
+  LegendComponent,
+  PieChart,
+  CanvasRenderer,
+  LabelLayout]);
+
+
 
 @Component({
   selector: 'app-data-group',
@@ -33,7 +47,7 @@ echarts.use([BarChart, GridComponent, CanvasRenderer, LineChart]);
   ],
   providers: [provideEchartsCore({ echarts })],
 })
-export class DataGroupComponent implements OnInit,ExitGroup {
+export class DataGroupComponent implements OnInit, ExitGroup {
   private readonly groupService: GroupFacade = inject(GroupFacade);
   private readonly tokenService: TokensService = inject(TokensService);
   private readonly pdfService: PdfService = inject(PdfService);
@@ -87,6 +101,9 @@ export class DataGroupComponent implements OnInit,ExitGroup {
   listGrafic: string[] = [];
 
   chartOption!: EChartsOption;
+  chartOptionCap1!: EChartsOption;
+  chartOptionCap2!: EChartsOption;
+  chartOptionComp!: EChartsOption;
 
   displayedColumns: string[] = [
     'name',
@@ -177,8 +194,100 @@ export class DataGroupComponent implements OnInit,ExitGroup {
             },
           ],
         };
-        this.pdfService.accessData = this.dataGroup;
+
+        let countLettersC1: number[] = this.countLetter(this.capacity1);
+        let countLettersC2: number[] = this.countLetter(this.capacity2);
+        let countLettersComp: number[] = this.countLetter(this.competences);
+
+        let countOfAD = countLettersC1[0] + countLettersC2[0] + countLettersComp[0];
+        let countOfA = countLettersC1[1] + countLettersC2[1] + countLettersComp[1];
+        let countOfB = countLettersC1[2] + countLettersC2[2] + countLettersComp[2];
+        let countOfC = countLettersC1[3] + countLettersC2[3] + countLettersComp[3];
+
+        this.chartOptionCap1 = {
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            top: '10%',
+            left: 'center'
+          },
+          series: [
+            {
+              name: 'Access From',
+              type: 'pie',
+              radius: ['40%', '90%'],
+              center: ['50%', '80%'],
+              // adjust the start and end angle
+              startAngle: 180,
+              endAngle: 360,
+              data: [
+                { value: countLettersC1[0], name: 'AD' },
+                { value: countLettersC1[1], name: 'A' },
+                { value: countLettersC1[2], name: 'B' },
+                { value: countLettersC1[3], name: 'C' }
+              ]
+            }
+          ]
+        };
+
+        this.chartOptionCap2 = {
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            top: '10%',
+            left: 'center'
+          },
+          series: [
+            {
+              name: 'Access From',
+              type: 'pie',
+              radius: ['40%', '90%'],
+              center: ['50%', '80%'],
+              // adjust the start and end angle
+              startAngle: 180,
+              endAngle: 360,
+              data: [
+                { value: countLettersC2[0], name: 'AD' },
+                { value: countLettersC2[1], name: 'A' },
+                { value: countLettersC2[2], name: 'B' },
+                { value: countLettersC2[3], name: 'C' }
+              ]
+            }
+          ]
+        };
+
+        this.chartOptionComp = {
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            top: '10%',
+            left: 'center'
+          },
+          series: [
+            {
+              name: 'Access From',
+              type: 'pie',
+              radius: ['40%', '90%'],
+              center: ['50%', '80%'],
+              // adjust the start and end angle
+              startAngle: 180,
+              endAngle: 360,
+              data: [
+                { value: countLettersComp[0], name: 'AD' },
+                { value: countLettersComp[1], name: 'A' },
+                { value: countLettersComp[2], name: 'B' },
+                { value: countLettersComp[3], name: 'C' }
+              ]
+            }
+          ]
+        };
+
+
         this.pdfService.accessGroupName = this.groupName;
+        this.pdfService.accessData = this.dataGroup;
         this.pdfService.accessC1 = this.capacity1;
         this.pdfService.accessC2 = this.capacity2;
         this.pdfService.accessComp = this.competences;
@@ -228,5 +337,21 @@ export class DataGroupComponent implements OnInit,ExitGroup {
 
   generatePdf() {
     this.pdfService.generatePDF();
+  }
+
+  countLetter(arrLetter: string[]): number[] {
+    let countAD: number = 0;
+    let countA: number = 0;
+    let countB: number = 0;
+    let countC: number = 0;
+
+    arrLetter.forEach(v => {
+      if (v === "AD") countAD++;
+      if (v === "A") countA++;
+      if (v === "B") countB++;
+      if (v === "C") countC++;
+    })
+
+    return Array(countAD, countA, countB, countC)
   }
 }

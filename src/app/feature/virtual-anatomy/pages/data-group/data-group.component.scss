@@ -117,8 +117,27 @@
     }
 
     &__grafics {
-      background-color: #ffffff;
-      border-radius: 15px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+
+      &--block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 15px;
+
+        & > p {
+          width: 75%;
+          margin: 30px 0 0 0;
+          font-size: 26px;
+          color: rgb(132, 81, 179);
+          font-weight: 700;
+          text-align: center;
+          line-height: 1.3;
+        }
+      }
     }
   }
 }

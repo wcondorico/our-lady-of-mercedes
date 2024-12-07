@@ -52,8 +52,7 @@ export class CreateGroupComponent {
         enterAnimationDuration,
         exitAnimationDuration,
       });
-    }
-    if (/^[a-zA-Z0-9]+$/.test(this.name)) {
+    } else if (/^[a-zA-Z0-9 ]*$/.test(this.name)) {
       const body: CreateGroupBody = {
         nameGroup: this.name.toUpperCase(),
       };
@@ -72,8 +71,7 @@ export class CreateGroupComponent {
           exitAnimationDuration,
         });
       });
-    }
-    if (!/^[a-zA-Z0-9]+$/.test(this.name) && this.name) {
+    } else if (!/^[a-zA-Z0-9 ]*$/.test(this.name) && this.name) {
       this.dialog.open(DialogErrorComponent, {
         data: {
           tittle: '¡Datos inválidos!',
